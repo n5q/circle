@@ -1,6 +1,9 @@
+const tolerance = 7;
+
 let centerX;
 let centerY;
 let r;
+let dists;
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
@@ -16,6 +19,8 @@ function draw() {
 } 
 
 function mousePressed() {
+    background(0x00)
+    redraw()
     let x = mouseX - centerX;
     let y = mouseY - centerY;
     r = Math.sqrt(x ** 2 + y ** 2);
@@ -26,7 +31,9 @@ function mousePressed() {
     
     noFill();
     stroke(0xFF);
-    circle(centerX, centerY, r*2);
+    circle(centerX, centerY, r * 2);
+    
+    dists = [];
 }
 
 
@@ -34,9 +41,31 @@ function mouseDragged() {
     let x = mouseX - centerX;
     let y = mouseY - centerY;
     let d = Math.abs(r - Math.sqrt(x ** 2 + y ** 2));
-    fill(0xFF, 0xFF, 0x00);
+    let dNorm = Math.min(2, 2 * d / r * tolerance)
+
+    let green;
+    let red;
+    if (dNorm < 1) {
+        green = 0xFF;
+        red = Math.round(dNorm * 0xFF);
+    } else
+    if (dNorm == 1) {
+        green = 0xFF;
+        red = 0xFF
+    } else
+    if (dNorm > 1) {
+        green = Math.round((2-dNorm) * 0xFF);
+        red = 0xFF;
+    }
+    
+
+    fill(red,green,0x00);
     noStroke();
-    circle(mouseX, mouseY, 20);
-    console.log(d)
+    circle(mouseX, mouseY, 20-(dNorm*3));
+    
+    dists.push(d);
+
+    
+
 }
 
