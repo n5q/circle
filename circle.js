@@ -5,8 +5,9 @@ let centerY;
 let r;
 let dists;
 let t;
-let error =0;
+let error = 0;
 let last = 0;
+let theta = 0;
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
@@ -32,24 +33,22 @@ function mousePressed() {
     let x = mouseX - centerX;
     let y = mouseY - centerY;
     r = Math.sqrt(x ** 2 + y ** 2);
-    
+    theta = Math.atan2(y, x);
     fill(0xFF);
     noStroke();
     circle(mouseX, mouseY, 5);
     
     noFill();
     stroke(0xFF);
-    circle(centerX, centerY, r * 2);
+    // circle(centerX, centerY, r * 2);
     
     dists = [];
-    push();
+    
 }
 
 function getError(list, target) {
     let error = 0;
-    sum = list.reduce((x, y) =>
-        (x + y)
-    );
+    sum = list.reduce((x, y) => (x + y));
     error = sum/target;
     return error;
 }
@@ -86,9 +85,9 @@ function mouseDragged() {
     error = getError(dists, dists.length);
     stroke(0x00);
     fill(0x00);
-    text((last * 100).toFixed(2), width / 2, width / 2 - 25);
+    text((last * 100).toFixed(2)+'%', width / 2, 25);
     fill(0xFF);
-    t = text((error*100).toFixed(2), width / 2, width / 2 - 25);
+    t = text((error * 100).toFixed(2) + '%', width / 2, 25);
 
 
 
